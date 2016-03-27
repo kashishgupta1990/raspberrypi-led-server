@@ -39,19 +39,20 @@ var LED = {
 function startHttpServer() {
     http
         .createServer(function (request, response) {
+            response.setHeader("Access-Control-Allow-Origin", "*");
             switch (request.url) {
                 case "/led/on":
-                    console.log('Turn on led');
+                    console.log('Led On');
                     LED.on();
-                    response.end('Turn on led');
+                    response.end('Led On');
                     break;
                 case "/led/off":
-                    console.log('Turn off led');
+                    console.log('Led Off');
                     LED.off();
-                    response.end('Turn off led');
+                    response.end('Led Off');
                     break;
                 case "/led/state":
-                    console.log('Turn off led');
+                    console.log('Status');
                     LED.state(function(err,value){
                        if(err){
                            response.end('Some error occure');
@@ -71,9 +72,10 @@ function startHttpServer() {
         })
         .listen(8000, function () {
             console.log('Server listening on 8000');
-        })
-        .on('close', function() {
-            closeAllPins();
-            console.log('Http Serve Closed');
-         });
+        });
 }
+
+process.on('exit', function() {
+    closeAllPins();
+    console.log('Closing all pins');
+});
