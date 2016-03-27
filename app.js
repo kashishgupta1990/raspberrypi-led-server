@@ -1,4 +1,5 @@
 var http = require('http');
+var gpio = require('pi-gpio');
 
 var GPIO = {
     init:function(){
