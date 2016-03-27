@@ -1,6 +1,6 @@
 $( document ).ready(function() {
     var baseUrl = 'http://192.168.0.199:8000/';
-    var ledImgTag = $('#ledImage');
+    var ledImgTag = $('#ledImage')[0];
     var LED = {
       on:function(){
           ledImgTag.src = "assets/img/pic_bulbon.gif";

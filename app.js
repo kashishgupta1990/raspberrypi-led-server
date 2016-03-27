@@ -20,7 +20,9 @@ gpio.open(GPIO_PIN.SIXTEEN, "output", function(err) {		// Open pin 16 for output
 });
 
 function closeAllPins(){
-    gpio.close(GPIO_PIN.SIXTEEN);
+    gpio.close(GPIO_PIN.SIXTEEN,function(){
+        console.log('Pin successfully closed');
+    });
 }
 
 var LED = {
