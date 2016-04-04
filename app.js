@@ -1,47 +1,65 @@
+// Require dependency
 var http = require('http');
 var gpio = require('pi-gpio');
 
-// GPIO basic setup
+// Raspberry Pi Constants
 var GPIO_PIN = {
-  SIXTEEN:16  
+    SIXTEEN: 16
+};
+var PIN_STATE = {
+    ON: 1,
+    OFF: 0
 };
 
-var PIN_STATE={
-    ON:1,
-    OFF:0
-};
-
-gpio.open(GPIO_PIN.SIXTEEN, "output", function(err) {		// Open pin 16 for output
-    if(err){
+// Raspberry Pi GPIO basic setup
+gpio.open(GPIO_PIN.SIXTEEN, "output", function (err) {		// Open pin 16 for output
+    if (err) {
         throw err;
     }
-
     startHttpServer();
 });
 
-function closeAllPins(){
-    gpio.close(GPIO_PIN.SIXTEEN,function(){
-        console.log('Pin successfully closed');
-    });
-}
-
+// Raspberry Pi LED Methods with LED namespace
 var LED = {
-    on:function(){
-        gpio.write(GPIO_PIN.SIXTEEN, PIN_STATE.ON, function() {});
-        
+    on: function () {
+        gpio.write(GPIO_PIN.SIXTEEN, PIN_STATE.ON, function () {
+        });
     },
-    off:function(){
-        gpio.write(GPIO_PIN.SIXTEEN, PIN_STATE.OFF, function() {});
+    off: function () {
+        gpio.write(GPIO_PIN.SIXTEEN, PIN_STATE.OFF, function () {
+        });
     },
-    state:function(callback){
+    state: function (callback) {
         gpio.read(GPIO_PIN.SIXTEEN, callback);
     }
 };
 
-function startHttpServer() {
+
+var closeAllPins = function () {
+    gpio.close(GPIO_PIN.SIXTEEN, function () {
+        console.log('Pin successfully closed');
+    });
+};
+
+// Server Methods
+var setHeaders = function (response, objectData) {
+    var json;
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.writeHead(200, {"Content-Type": "application/json"});
+    try {
+        json = JSON.stringify(objectData);
+    } catch (e) {
+        json = {
+            error: e
+        }
+    }
+    response.end(json);
+};
+
+var startHttpServer = function () {
     http
         .createServer(function (request, response) {
-            response.setHeader("Access-Control-Allow-Origin", "*");
+
             switch (request.url) {
                 case "/led/on":
                     console.log('Led On');
@@ -55,16 +73,16 @@ function startHttpServer() {
                     break;
                 case "/led/state":
                     console.log('Status');
-                    LED.state(function(err,value){
-                       if(err){
-                           response.end('Some error occure');
-                       } else{
-                           if(value==1){
-                               response.end('ON');
-                           }else {
-                               response.end('OFF');
-                           }
-                       }
+                    LED.state(function (err, value) {
+                        if (err) {
+                            response.end('Some error occure');
+                        } else {
+                            if (value == 1) {
+                                response.end('ON');
+                            } else {
+                                response.end('OFF');
+                            }
+                        }
                     });
                     break;
                 default:
@@ -75,9 +93,9 @@ function startHttpServer() {
         .listen(8000, function () {
             console.log('Server listening on 8000');
         });
-}
+};
 
-process.on('exit', function() {
+process.on('exit', function () {
     closeAllPins();
     console.log('Closing all pins');
 });
