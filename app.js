@@ -5,7 +5,7 @@ var SERVER_PORT = 8000;
 
 // Raspberry Pi Constants
 var GPIO_PIN = {
-    SIXTEEN: 16
+    ELEVEN:11
 };
 var PIN_STATE = {
     ON: 1,
@@ -13,7 +13,7 @@ var PIN_STATE = {
 };
 
 // Raspberry Pi GPIO basic setup
-gpio.open(GPIO_PIN.SIXTEEN, "output", function (err) {		// Open pin 16 for output
+gpio.open(GPIO_PIN.ELEVEN, "output", function (err) {		// Open pin 16 for output
     if (err) {
         throw err;
     }
@@ -23,20 +23,20 @@ gpio.open(GPIO_PIN.SIXTEEN, "output", function (err) {		// Open pin 16 for outpu
 // Raspberry Pi LED Methods with LED namespace
 var LED = {
     on: function () {
-        gpio.write(GPIO_PIN.SIXTEEN, PIN_STATE.ON, function () {
+        gpio.write(GPIO_PIN.ELEVEN, PIN_STATE.ON, function () {
         });
     },
     off: function () {
-        gpio.write(GPIO_PIN.SIXTEEN, PIN_STATE.OFF, function () {
+        gpio.write(GPIO_PIN.ELEVEN, PIN_STATE.OFF, function () {
         });
     },
     state: function (callback) {
-        gpio.read(GPIO_PIN.SIXTEEN, callback);
+        gpio.read(GPIO_PIN.ELEVEN, callback);
     }
 };
 
 var closeAllPins = function () {
-    gpio.close(GPIO_PIN.SIXTEEN, function () {
+    gpio.close(GPIO_PIN.ELEVEN, function () {
         console.log('Pin successfully closed');
         process.exit();
     });
