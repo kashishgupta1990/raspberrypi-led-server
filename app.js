@@ -75,7 +75,7 @@ var startHttpServer = function () {
                     console.log('Status');
                     LED.state(function (err, value) {
                         if (err) {
-                            response.end('Some error occure');
+                            response.end('Some error occure',err);
                         } else {
                             if (value == 1) {
                                 setHeaders(response, {status: 'ON'});
@@ -86,7 +86,7 @@ var startHttpServer = function () {
                     });
                     break;
                 default:
-                    console.log('I dont know man');
+                    console.log('Invalid API');
                     setHeaders(response, {status: 'Invalid API'});
             }
         })
