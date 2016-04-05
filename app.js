@@ -43,7 +43,7 @@ var closeAllPins = function () {
 };
 
 // Server Methods
-var setHeaders = function (response, objectData) {
+var setResponseHeader = function (response, objectData) {
     var json;
     response.setHeader("Access-Control-Allow-Origin", "*");
     response.writeHead(200, {"Content-Type": "application/json"});
@@ -65,12 +65,12 @@ var startHttpServer = function () {
                 case "/led/on":
                     console.log('Led On');
                     LED.on();
-                    setHeaders(response, {status: 'Led On'});
+                    setResponseHeader(response, {status: 'Led On'});
                     break;
                 case "/led/off":
                     console.log('Led Off');
                     LED.off();
-                    setHeaders(response, {status: 'Led Off'});
+                    setResponseHeader(response, {status: 'Led Off'});
                     break;
                 case "/led/state":
                     console.log('Status');
@@ -79,16 +79,16 @@ var startHttpServer = function () {
                             response.end('Some error occure',err);
                         } else {
                             if (value == 1) {
-                                setHeaders(response, {status: 'ON'});
+                                setResponseHeader(response, {status: 'ON'});
                             } else {
-                                setHeaders(response, {status: 'OFF'});
+                                setResponseHeader(response, {status: 'OFF'});
                             }
                         }
                     });
                     break;
                 default:
                     console.log('Invalid API');
-                    setHeaders(response, {status: 'Invalid API'});
+                    setResponseHeader(response, {status: 'Invalid API'});
             }
         })
         .listen(SERVER_PORT, function () {
