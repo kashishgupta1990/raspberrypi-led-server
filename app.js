@@ -34,7 +34,6 @@ var LED = {
     }
 };
 
-
 var closeAllPins = function () {
     gpio.close(GPIO_PIN.SIXTEEN, function () {
         console.log('Pin successfully closed');
@@ -96,6 +95,12 @@ var startHttpServer = function () {
 };
 
 // Close all open pin when process exit
-process.on('exit', closeAllPins);
-process.on('SIGINT', closeAllPins);
+process.on('exit', function(){
+    console.log('Exit process');
+    closeAllPins();
+});
+process.on('SIGINT', function(){
+    console.log('Ctrl+C');
+    closeAllPins();
+});
 process.stdin.resume();
