@@ -53,7 +53,7 @@ var setHeaders = function (response, objectData) {
             error: e
         }
     }
-    response.end(json);
+    return response.end(json);
 };
 
 var startHttpServer = function () {
@@ -64,12 +64,12 @@ var startHttpServer = function () {
                 case "/led/on":
                     console.log('Led On');
                     LED.on();
-                    response.end('Led On');
+                    setHeaders(response,{status:'Led On'});
                     break;
                 case "/led/off":
                     console.log('Led Off');
                     LED.off();
-                    response.end('Led Off');
+                    setHeaders(response,{status:'Led Off'});
                     break;
                 case "/led/state":
                     console.log('Status');
@@ -78,16 +78,16 @@ var startHttpServer = function () {
                             response.end('Some error occure');
                         } else {
                             if (value == 1) {
-                                response.end('ON');
+                                setHeaders(response,{status:'ON'});
                             } else {
-                                response.end('OFF');
+                                setHeaders(response,{status:'OFF'});
                             }
                         }
                     });
                     break;
                 default:
                     console.log('I dont know man');
-                    response.end('I dont know man');
+                    setHeaders(response,{status:'Invalid API'});
             }
         })
         .listen(8000, function () {
