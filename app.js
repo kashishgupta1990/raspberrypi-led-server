@@ -64,12 +64,12 @@ var startHttpServer = function () {
                 case "/led/on":
                     console.log('Led On');
                     LED.on();
-                    setHeaders(response,{status:'Led On'});
+                    setHeaders(response, {status: 'Led On'});
                     break;
                 case "/led/off":
                     console.log('Led Off');
                     LED.off();
-                    setHeaders(response,{status:'Led Off'});
+                    setHeaders(response, {status: 'Led Off'});
                     break;
                 case "/led/state":
                     console.log('Status');
@@ -78,16 +78,16 @@ var startHttpServer = function () {
                             response.end('Some error occure');
                         } else {
                             if (value == 1) {
-                                setHeaders(response,{status:'ON'});
+                                setHeaders(response, {status: 'ON'});
                             } else {
-                                setHeaders(response,{status:'OFF'});
+                                setHeaders(response, {status: 'OFF'});
                             }
                         }
                     });
                     break;
                 default:
                     console.log('I dont know man');
-                    setHeaders(response,{status:'Invalid API'});
+                    setHeaders(response, {status: 'Invalid API'});
             }
         })
         .listen(8000, function () {
@@ -95,7 +95,7 @@ var startHttpServer = function () {
         });
 };
 
-process.on('exit', function () {
-    closeAllPins();
-    console.log('Closing all pins');
-});
+// Close all open pin when process exit
+process.on('exit', closeAllPins);
+process.on('SIGINT', closeAllPins);
+process.stdin.resume();
