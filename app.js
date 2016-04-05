@@ -5,7 +5,7 @@ var SERVER_PORT = 8000;
 
 // Raspberry Pi Constants
 var GPIO_PIN = {
-    ELEVEN:11
+    ELEVEN: 11
 };
 var PIN_STATE = {
     ON: 1,
@@ -76,7 +76,7 @@ var startHttpServer = function () {
                     console.log('Status');
                     LED.state(function (err, value) {
                         if (err) {
-                            response.end('Some error occure',err);
+                            response.end('Some error occure', err);
                         } else {
                             if (value == 1) {
                                 setResponseHeader(response, {status: 'ON'});
@@ -87,17 +87,16 @@ var startHttpServer = function () {
                     });
                     break;
                 default:
-                    console.log('Invalid API');
                     setResponseHeader(response, {status: 'Invalid API'});
             }
         })
         .listen(SERVER_PORT, function () {
-            console.log('Server listening on 8000');
+            console.log('Server listening on ' + SERVER_PORT);
         });
 };
 
 // Close all open pin when process exit
-process.on('SIGINT', function(){
+process.on('SIGINT', function () {
     console.log('Ctrl+C');
     closeAllPins();
 });
