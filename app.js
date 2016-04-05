@@ -1,6 +1,7 @@
 // Require dependency
 var http = require('http');
 var gpio = require('pi-gpio');
+var SERVER_PORT = 8000;
 
 // Raspberry Pi Constants
 var GPIO_PIN = {
@@ -90,7 +91,7 @@ var startHttpServer = function () {
                     setHeaders(response, {status: 'Invalid API'});
             }
         })
-        .listen(8000, function () {
+        .listen(SERVER_PORT, function () {
             console.log('Server listening on 8000');
         });
 };
